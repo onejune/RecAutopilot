@@ -1,0 +1,14 @@
+# 特征实验A: 去掉外部行为特征 duf_outer_dev_*
+experiment_name: fea_no_outer_dev
+combine_schema_path: ./conf/experiments/exp_fea_A/combine_schema
+
+model_type: WideDeep
+embedding_size: 8
+dnn_hidden_units: [1024, 512, 256, 128]
+batch_size: 256
+net_dropout: 0.5
+adam_learning_rate: 1.0e-05
+train_start_date: 2026-03-08
+train_end_date: 2026-03-10
+validation_date: 2026-03-11
+train_path_prefix: /mnt/data/oss_dsp_algo/ivr/sample/ivr_sample_v16/parquet
