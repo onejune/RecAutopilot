@@ -12,7 +12,7 @@ server_memory: '8G'
 coordinator_memory: '10G'
 
 ## 数据路径
-train_path_prefix: /mnt/data/oss_dsp_algo/ivr/sample/ivr_sample_v7/parquet
+train_path_prefix: /mnt/data/oss_dsp_algo/ivr/sample/ivr_sample_v16/parquet
 movas_log_output_path: ./log/movas.log
 
 ## 模型输出
