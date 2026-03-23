@@ -23,7 +23,7 @@ echo "开始时间: $(date '+%H:%M:%S')"
 cp ./conf/experiments/exp1_baseline/readme ./readme 2>/dev/null || true
 $PYTHON src/autopilot_runner.py \
     --base_conf ./conf/base.yaml \
-    --exp_conf ./conf/experiments/exp1_baseline.yaml \
+    --exp_conf ./conf/experiments/phase1_baseline/exp1_baseline.yaml \
     --name baseline_v2 \
     --hypothesis "Baseline on v16 data (2026)" \
     2>&1 | grep -v "bkdr_hash\|add expr\|StringBKDR"
@@ -36,7 +36,7 @@ echo "开始时间: $(date '+%H:%M:%S')"
 cp ./conf/experiments/exp2_deeper/readme ./readme 2>/dev/null || true
 $PYTHON src/autopilot_runner.py \
     --base_conf ./conf/base.yaml \
-    --exp_conf ./conf/experiments/exp2_deeper.yaml \
+    --exp_conf ./conf/experiments/phase1_baseline/exp2_deeper.yaml \
     --name deeper_dnn \
     --hypothesis "Deeper DNN: [1024,512,256,128]" \
     2>&1 | grep -v "bkdr_hash\|add expr\|StringBKDR"
@@ -49,7 +49,7 @@ echo "开始时间: $(date '+%H:%M:%S')"
 cp ./conf/experiments/exp3_wider/readme ./readme 2>/dev/null || true
 $PYTHON src/autopilot_runner.py \
     --base_conf ./conf/base.yaml \
-    --exp_conf ./conf/experiments/exp3_wider.yaml \
+    --exp_conf ./conf/experiments/phase1_baseline/exp3_wider.yaml \
     --name wider_emb16 \
     --hypothesis "Wider DNN + emb_size=16 + lr=5e-6" \
     2>&1 | grep -v "bkdr_hash\|add expr\|StringBKDR"

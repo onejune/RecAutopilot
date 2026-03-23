@@ -21,7 +21,7 @@ echo "[1/3] baseline_v2 验证 (model_2026-03-08, val_date=2026-03-11)"
 echo "开始时间: $(date '+%H:%M:%S')"
 $PYTHON src/autopilot_runner.py \
     --base_conf ./conf/base.yaml \
-    --exp_conf ./conf/experiments/exp1_baseline.yaml \
+    --exp_conf ./conf/experiments/phase1_baseline/exp1_baseline.yaml \
     --name baseline_v2 \
     --hypothesis "Baseline on v16 data (2026)" \
     --validation True \
@@ -36,7 +36,7 @@ echo "[2/3] 实验2: deeper_dnn (更深网络)"
 echo "开始时间: $(date '+%H:%M:%S')"
 $PYTHON src/autopilot_runner.py \
     --base_conf ./conf/base.yaml \
-    --exp_conf ./conf/experiments/exp2_deeper.yaml \
+    --exp_conf ./conf/experiments/phase1_baseline/exp2_deeper.yaml \
     --name deeper_dnn \
     --hypothesis "Deeper DNN: [1024,512,256,128]" \
     2>&1 | grep -v "bkdr_hash\|add expr\|StringBKDR"
@@ -48,7 +48,7 @@ echo "[3/3] 实验3: wider_emb16 (更宽网络+大embedding)"
 echo "开始时间: $(date '+%H:%M:%S')"
 $PYTHON src/autopilot_runner.py \
     --base_conf ./conf/base.yaml \
-    --exp_conf ./conf/experiments/exp3_wider.yaml \
+    --exp_conf ./conf/experiments/phase1_baseline/exp3_wider.yaml \
     --name wider_emb16 \
     --hypothesis "Wider DNN + emb_size=16 + lr=5e-6" \
     2>&1 | grep -v "bkdr_hash\|add expr\|StringBKDR"

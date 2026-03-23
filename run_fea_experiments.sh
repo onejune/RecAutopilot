@@ -20,7 +20,7 @@ run_group1() {
     echo "[Group1] 实验A: fea_no_outer_dev 开始 $(date '+%H:%M:%S')"
     $PYTHON src/autopilot_runner.py \
         --base_conf ./conf/base.yaml \
-        --exp_conf ./conf/experiments/exp_fea_A.yaml \
+        --exp_conf ./conf/experiments/phase2_feature/exp_fea_A.yaml \
         --name fea_no_outer_dev \
         --hypothesis "去掉外部行为特征duf_outer_dev_*，验证其贡献" \
         2>&1 | grep -v "bkdr_hash\|add expr\|StringBKDR" | tee log/fea_A.log
@@ -29,7 +29,7 @@ run_group1() {
     echo "[Group1] 实验B: fea_short_window 开始 $(date '+%H:%M:%S')"
     $PYTHON src/autopilot_runner.py \
         --base_conf ./conf/base.yaml \
-        --exp_conf ./conf/experiments/exp_fea_B.yaml \
+        --exp_conf ./conf/experiments/phase2_feature/exp_fea_B.yaml \
         --name fea_short_window \
         --hypothesis "只保留<=7d时间窗口特征，去掉15d特征" \
         2>&1 | grep -v "bkdr_hash\|add expr\|StringBKDR" | tee log/fea_B.log
@@ -41,7 +41,7 @@ run_group2() {
     echo "[Group2] 实验C: fea_more_cross 开始 $(date '+%H:%M:%S')"
     $PYTHON src/autopilot_runner.py \
         --base_conf ./conf/base.yaml \
-        --exp_conf ./conf/experiments/exp_fea_C.yaml \
+        --exp_conf ./conf/experiments/phase2_feature/exp_fea_C.yaml \
         --name fea_more_cross \
         --hypothesis "增加9个基础特征交叉，如bundle#devicetype等" \
         2>&1 | grep -v "bkdr_hash\|add expr\|StringBKDR" | tee log/fea_C.log
@@ -50,7 +50,7 @@ run_group2() {
     echo "[Group2] 实验D: fea_no_ruf2 开始 $(date '+%H:%M:%S')"
     $PYTHON src/autopilot_runner.py \
         --base_conf ./conf/base.yaml \
-        --exp_conf ./conf/experiments/exp_fea_D.yaml \
+        --exp_conf ./conf/experiments/phase2_feature/exp_fea_D.yaml \
         --name fea_no_ruf2 \
         --hypothesis "去掉ruf2_*实时流式特征，验证其贡献" \
         2>&1 | grep -v "bkdr_hash\|add expr\|StringBKDR" | tee log/fea_D.log
