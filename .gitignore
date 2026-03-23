@@ -1,0 +1,22 @@
+# 运行时产物
+output/
+log/
+temp/
+python.zip
+train_interrupt.flag
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 系统
+.DS_Store

@@ -1,0 +1,48 @@
+## ============================================================
+## RecAutoPilot 基础配置（固定部分，Agent 不应修改）
+## ============================================================
+
+## Spark 配置
+app_name: 'rec_autopilot'
+local_spark: local
+worker_count: 6
+server_count: 2
+worker_memory: '8G'
+server_memory: '8G'
+coordinator_memory: '10G'
+
+## 数据路径
+train_path_prefix: /mnt/data/oss_dsp_algo/ivr/sample/ivr_sample_v7/parquet
+movas_log_output_path: ./log/movas.log
+
+## 模型输出
+model_out_base_path: ./output/
+model_export_path: null
+model_version: '0.1'
+
+## 特征配置路径
+combine_schema_path: ./conf/combine_schema
+wide_combine_schema_path: ./conf/combine_schema
+
+## 标签列索引（基于 column_name 文件）
+input_label_column_index: 112
+
+## 业务过滤（只保留这些 business_type）
+business_type_filter:
+  - shein
+  - ae      # 前缀匹配
+  - shopee  # 前缀匹配
+  - lazada  # 前缀匹配
+
+## Wide 模型优化器配置（FTRL）
+ftrl_alpha: 0.005
+ftrl_beta: 0.05
+ftrl_l1: 1.0
+ftrl_l2: 10.0
+
+## 其他默认配置
+batch_norm: false
+use_wide: false
+shuffle_training_dataset: true
+training_epoches: 1
+loss_func: log_loss

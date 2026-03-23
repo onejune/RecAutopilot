@@ -1,0 +1,14 @@
+{
+  "exp_id": "exp_20260322_183612",
+  "start_time": "2026-03-22T18:36:12.828558",
+  "model_type": "WideDeep",
+  "embedding_size": 8,
+  "dnn_hidden_units": [
+    512,
+    256,
+    64
+  ],
+  "batch_size": 256,
+  "train_dates": "2025-09-02 ~ 2025-09-04",
+  "validation_date": "2025-09-05"
+}

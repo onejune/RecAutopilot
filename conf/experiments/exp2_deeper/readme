@@ -1,0 +1,9 @@
+1. WideDeep model (deeper DNN);
+2. DNN hidden units: [1024, 512, 256, 128] (4层);
+3. embedding size = 8;
+4. use_wide = False, net_dropout = 0.5;
+5. batch_size = 256;
+6. adam_learning_rate = 1e-5;
+7. 训练数据: 2026-03-08 ~ 2026-03-10 (v16样本);
+8. 验证数据: 2026-03-11;
+9. 假设: 更深的网络能学习更复杂的特征交互;
