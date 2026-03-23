@@ -9,4 +9,4 @@ adam_learning_rate: 1.0e-05
 train_start_date: 2026-03-08
 train_end_date: 2026-03-10
 validation_date: 2026-03-11
-train_path_prefix: /mnt/data/oss_dsp_algo/ivr/sample/ivr_sample_v16/parquet
+train_path_prefix: /mnt/data/oss_dsp_algo/ivr/sample/ivr_sample_v7/parquet
