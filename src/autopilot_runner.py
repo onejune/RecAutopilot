@@ -35,10 +35,15 @@ class AutoPilotTrainFlow(DNNModelTrainFlow):
     继承 DNNModelTrainFlow，重写数据读取逻辑以支持业务过滤
     """
     
-    def __init__(self, config_path: str, base_config_path: str = None):
+    def __init__(self, config_path: str, base_config_path: str = None,
+                 output_dir: str = None, exp_conf_path: str = None):
         # 合并配置
-        self.merged_config_path = self._merge_configs(base_config_path, config_path)
+        self.merged_config_path = self._merge_configs(base_config_path, config_path,
+                                                       output_dir=output_dir)
         super().__init__(self.merged_config_path)
+        # 保存 exp_conf 路径，用于读取 readme
+        self._exp_conf_path = exp_conf_path or config_path
+        self._load_exp_readme()
         
         # 业务过滤配置
         self.business_type_filter = self.params.get('business_type_filter', 
@@ -48,7 +53,8 @@ class AutoPilotTrainFlow(DNNModelTrainFlow):
         self.exp_id = None
         self.exp_start_time = None
     
-    def _merge_configs(self, base_path: str, exp_path: str) -> str:
+    def _merge_configs(self, base_path: str, exp_path: str,
+                       output_dir: str = None) -> str:
         """合并基础配置和实验配置"""
         merged = {}
         
@@ -61,13 +67,52 @@ class AutoPilotTrainFlow(DNNModelTrainFlow):
         with open(exp_path, 'r') as f:
             merged.update(yaml.safe_load(f) or {})
         
-        # 写入临时合并文件
-        merged_path = './conf/_merged_config.yaml'
+        # --output_dir 优先级最高，覆盖 model_out_base_path
+        if output_dir:
+            merged['model_out_base_path'] = output_dir
+        
+        # 写入临时合并文件（按实验配置文件名区分，避免并行时互相覆盖）
+        exp_name = os.path.splitext(os.path.basename(exp_path))[0]
+        merged_path = f'./conf/_merged_{exp_name}.yaml'
         os.makedirs(os.path.dirname(merged_path), exist_ok=True)
         with open(merged_path, 'w') as f:
             yaml.dump(merged, f, default_flow_style=False)
         
         return merged_path
+
+    def _load_exp_readme(self):
+        """
+        从实验 conf 目录下的 readme 文件加载实验描述，
+        覆盖 base_trainFlow._load_config 中读取 ./readme 的逻辑。
+        优先级：
+          1. <exp_conf_dir>/<exp_name>/readme  (yaml 同名子目录，如 exp_fea_A/readme)
+          2. <exp_conf_dir>/readme             (yaml 所在目录)
+          3. ./readme                          (根目录兜底)
+        """
+        readme_content = ''
+        candidates = []
+        if self._exp_conf_path:
+            abs_path = os.path.abspath(self._exp_conf_path)
+            exp_dir = os.path.dirname(abs_path)
+            # 1. yaml 同名子目录：去掉 .yaml 后缀得到子目录名
+            exp_name = os.path.splitext(os.path.basename(abs_path))[0]
+            candidates.append(os.path.join(exp_dir, exp_name, 'readme'))
+            # 2. yaml 所在目录
+            candidates.append(os.path.join(exp_dir, 'readme'))
+        # 3. 根目录兜底
+        candidates.append('./readme')
+
+        for path in candidates:
+            if os.path.exists(path):
+                try:
+                    with open(path, 'r', encoding='utf-8') as f:
+                        readme_content = f.read().strip()
+                    break
+                except Exception:
+                    pass
+
+        if readme_content:
+            self.exp_readme = '实验信息:\n' + readme_content
     
     def _read_dataset_by_date(self, base_path: str, date_str: str):
         """
@@ -251,6 +296,8 @@ def main():
                         help='验证模式下的模型日期')
     parser.add_argument('--sample_date', type=str, default=None,
                         help='验证模式下的样本日期')
+    parser.add_argument('--output_dir', type=str, default=None,
+                        help='模型输出根目录（覆盖 base.yaml 中的 model_out_base_path，用于并行实验隔离）')
     
     args = parser.parse_args()
     
@@ -263,7 +310,9 @@ def main():
     print(f"=" * 60)
     
     # 创建训练流程
-    trainer = AutoPilotTrainFlow(args.exp_conf, args.base_conf)
+    trainer = AutoPilotTrainFlow(args.exp_conf, args.base_conf,
+                                 output_dir=args.output_dir,
+                                 exp_conf_path=args.exp_conf)
     trainer.set_experiment_id(exp_id)
     
     # 保存实验配置
