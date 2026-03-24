@@ -1,0 +1,32 @@
+# ============================================================
+# Phase 3 模型架构探索实验计划
+# 对比不同模型架构，baseline: deeper_dnn WideDeep (AUC=0.8354)
+# ============================================================
+gap_seconds: 30
+
+experiments:
+  # Group 1: WideDeep 变体
+  - name: arch_deepfm
+    exp_conf: conf/experiments/phase3_architecture/exp_deepfm.yaml
+    hypothesis: DeepFM 替代 WideDeep，FM 二阶交叉更充分
+    output_dir: ./output/arch_deepfm
+    group: 1
+
+  - name: arch_dcn
+    exp_conf: conf/experiments/phase3_architecture/exp_dcn.yaml
+    hypothesis: DCN 显式高阶特征交叉
+    output_dir: ./output/arch_dcn
+    group: 1
+
+  # Group 2: 门控/掩码类
+  - name: arch_masknet
+    exp_conf: conf/experiments/phase3_architecture/exp_masknet.yaml
+    hypothesis: MaskNet 特征掩码机制，减少无关特征干扰
+    output_dir: ./output/arch_masknet
+    group: 2
+
+  - name: arch_widedeep_wide
+    exp_conf: conf/experiments/phase3_architecture/exp_widedeep_wide.yaml
+    hypothesis: WideDeep 开启 use_wide=True，Wide 部分参与训练
+    output_dir: ./output/arch_widedeep_wide
+    group: 2

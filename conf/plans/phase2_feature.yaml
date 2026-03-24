@@ -1,0 +1,32 @@
+# ============================================================
+# Phase 2 特征筛选实验计划
+# 验证各类特征组的贡献，baseline: deeper_dnn (AUC=0.8354)
+# ============================================================
+gap_seconds: 30   # 并行组间启动间隔（秒）
+
+experiments:
+  # Group 1: 串行
+  - name: fea_no_outer_dev
+    exp_conf: conf/experiments/phase2_feature/exp_fea_A.yaml
+    hypothesis: 去掉外部行为特征duf_outer_dev_*（约20个），验证其贡献
+    output_dir: ./output/fea_no_outer_dev
+    group: 1
+
+  - name: fea_short_window
+    exp_conf: conf/experiments/phase2_feature/exp_fea_B.yaml
+    hypothesis: 只保留<=7d时间窗口特征，去掉15d特征
+    output_dir: ./output/fea_short_window
+    group: 1
+
+  # Group 2: 串行（与 Group 1 并行）
+  - name: fea_more_cross
+    exp_conf: conf/experiments/phase2_feature/exp_fea_C.yaml
+    hypothesis: 增加9个基础特征交叉，如bundle#devicetype等
+    output_dir: ./output/fea_more_cross
+    group: 2
+
+  - name: fea_no_ruf2
+    exp_conf: conf/experiments/phase2_feature/exp_fea_D.yaml
+    hypothesis: 去掉ruf2_*实时流式特征（约15个），验证其贡献
+    output_dir: ./output/fea_no_ruf2
+    group: 2

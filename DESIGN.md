@@ -57,23 +57,40 @@ rec-autopilot/
 ├── DESIGN.md               # 本文档
 ├── program.md              # Agent 研究计划（人类编写）
 ├── conf/
-│   ├── base.yaml           # 基础配置（固定部分）
-│   ├── experiment.yaml     # 实验配置（Agent 可改）
-│   ├── combine_schema      # 特征配置（Agent 可改）
-│   └── column_name         # 特征全集（只读参考）
+│   ├── base.yaml           # 基础配置（固定，不改）
+│   ├── combine_schema      # 默认特征配置
+│   ├── column_name         # 特征全集（只读参考）
+│   ├── experiments/        # 各阶段实验配置
+│   │   ├── phase1_baseline/    # Phase 1: 基准实验
+│   │   ├── phase2_feature/     # Phase 2: 特征筛选
+│   │   ├── phase3_architecture/ # Phase 3: 架构探索
+│   │   └── phase4_hyperparam/  # Phase 4: 超参优化
+│   └── plans/              # 批量实验计划（YAML）
+│       ├── phase2_feature.yaml
+│       ├── phase3_architecture.yaml
+│       └── phase4_hyperparam.yaml
 ├── src/
-│   ├── base_trainFlow.py   # 训练基类
-│   ├── dnn_trainFlow.py    # DNN 训练流程
-│   ├── autopilot_runner.py # 自动化实验运行器
-│   ├── experiment_tracker.py # 实验记录器
+│   ├── base_trainFlow.py   # 训练基类（核心，不改）
+│   ├── dnn_trainFlow.py    # DNN 训练流程（轻量，调注册表）
+│   ├── model_registry.py   # 模型注册表（新增模型在此注册）
+│   ├── models/             # 模型实现（每类一个文件）
+│   │   ├── widedeep_models.py  # WideDeep, WideDeep2
+│   │   ├── lr_models.py        # LRFtrl, LRFtrl2, LRFtrl3
+│   │   ├── interaction_models.py # DeepFM, DCN, FFM, FwFM, MaskNet
+│   │   └── advanced_models.py  # APGNet, PPNet, FourChannelGateModel
+│   ├── autopilot_runner.py # 实验运行器（入口）
 │   ├── metrics_eval.py     # 评估工具
 │   ├── movas_logger.py     # 日志工具
 │   └── feishu_notifier.py  # 通知工具
 ├── scripts/
-│   ├── run_experiment.sh   # 单次实验脚本
+│   ├── run_batch.sh        # 通用批量启动脚本（主入口）
+│   ├── batch_runner.py     # Python 批量调度器
+│   ├── summarize_results.py # 实验结果汇总
+│   ├── run_experiment.sh   # 单次实验脚本（兼容保留）
 │   └── init_env.sh         # 环境初始化
-├── experiments/            # 实验记录目录
-├── leaderboard.json        # 实验排行榜
+├── experiments/            # 实验记录目录（自动生成）
+├── leaderboard.json        # 实验排行榜（自动更新）
+├── log/                    # 实验日志目录
 └── insights.md             # 研究洞察（Agent 维护）
 ```
 
@@ -243,19 +260,49 @@ batch_size: 256
 
 ## 9. 快速开始
 
+### 9.1 运行批量实验（推荐）
 ```bash
-# 1. 进入项目目录
 cd /mnt/workspace/open_research/rec-autopilot
 
-# 2. 初始化环境
-bash scripts/init_env.sh
+# 运行 Phase 3 架构探索（4个实验，2组并行）
+bash scripts/run_batch.sh conf/plans/phase3_architecture.yaml
 
-# 3. 运行单次实验
-bash scripts/run_experiment.sh
-
-# 4. 查看结果
-cat leaderboard.json
+# 运行 Phase 4 超参优化
+bash scripts/run_batch.sh conf/plans/phase4_hyperparam.yaml
 ```
+
+### 9.2 查看实验结果
+```bash
+# 汇总所有实验，按 AUC 排序
+python scripts/summarize_results.py
+
+# 只看 Phase 3 架构实验
+python scripts/summarize_results.py --filter arch
+
+# 对比 top 10，以 deeper_dnn 为 baseline
+python scripts/summarize_results.py --top 10 --baseline deeper_dnn
+```
+
+### 9.3 新增模型
+只需在 `src/models/` 下创建新文件并注册：
+```python
+# src/models/my_models.py
+from model_registry import register
+from metaspore.algos.my_net import MyModel
+
+@register("MyModel", "mymodel")
+def build_mymodel(params: dict):
+    return MyModel(
+        embedding_dim=params.get('embedding_size', 8),
+        # ... 其他参数
+    )
+```
+然后在 yaml 中指定 `model_type: MyModel` 即可，无需修改其他文件。
+
+### 9.4 新增实验
+1. 在 `conf/experiments/phaseX/` 下创建 yaml 文件
+2. 在 `conf/plans/` 下的计划文件中添加实验条目
+3. 运行 `bash scripts/run_batch.sh conf/plans/phaseX.yaml`
 
 ---
 

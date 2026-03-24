@@ -1,0 +1,32 @@
+# ============================================================
+# Phase 4 超参优化实验计划
+# 基于最优架构（待 Phase 3 确定后填写），网格搜索关键超参
+# ============================================================
+gap_seconds: 30
+
+experiments:
+  # Group 1: 学习率探索
+  - name: hp_lr_5e5
+    exp_conf: conf/experiments/phase4_hyperparam/exp_lr_5e5.yaml
+    hypothesis: 学习率 5e-5，比默认 1e-5 大5倍
+    output_dir: ./output/hp_lr_5e5
+    group: 1
+
+  - name: hp_lr_5e6
+    exp_conf: conf/experiments/phase4_hyperparam/exp_lr_5e6.yaml
+    hypothesis: 学习率 5e-6，比默认 1e-5 小2倍
+    output_dir: ./output/hp_lr_5e6
+    group: 1
+
+  # Group 2: Embedding 维度探索
+  - name: hp_emb_16
+    exp_conf: conf/experiments/phase4_hyperparam/exp_emb16.yaml
+    hypothesis: embedding_size=16，更大的特征表示空间
+    output_dir: ./output/hp_emb_16
+    group: 2
+
+  - name: hp_emb_4
+    exp_conf: conf/experiments/phase4_hyperparam/exp_emb4.yaml
+    hypothesis: embedding_size=4，更小的特征表示，防过拟合
+    output_dir: ./output/hp_emb_4
+    group: 2
