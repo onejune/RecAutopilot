@@ -1,0 +1,5 @@
+实验名称: hp_lr_5e5
+假设: 学习率从 1e-5 提高到 5e-5，更快收敛可能带来更好效果
+参数变化: adam_learning_rate=5e-5（基准=1e-5）
+其他参数: DNN [1024,512,256,128], emb=8, dropout=0.5, batch=256
+对比基准: deeper_dnn（AUC 0.8354）

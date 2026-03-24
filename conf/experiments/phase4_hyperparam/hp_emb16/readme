@@ -1,0 +1,5 @@
+实验名称: hp_emb16
+假设: embedding_size 从 8 增大到 16，验证更大 embedding 对 AUC 的影响
+参数变化: embedding_size=16（基准=8）
+其他参数: DNN [1024,512,256,128], lr=1e-5, dropout=0.5, batch=256
+对比基准: deeper_dnn（AUC 0.8354）
