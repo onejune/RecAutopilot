@@ -1,4 +1,109 @@
 {
-  "best_overall_auc": null,
-  "experiments": []
+  "best_overall_auc": 0.8374,
+  "best_experiment": "comb_lr5e5_drop03",
+  "updated_at": "2026-03-25",
+  "experiments": [
+    {
+      "rank": 1,
+      "exp_name": "comb_lr5e5_drop03",
+      "phase": "phase5_combined",
+      "auc": 0.8374,
+      "pcoc": 1.0877,
+      "logloss": 0.2087,
+      "config": {
+        "model_type": "WideDeep",
+        "dnn_hidden_units": [1024, 512, 256, 128],
+        "embedding_size": 8,
+        "adam_learning_rate": 5e-5,
+        "net_dropout": 0.3,
+        "batch_size": 256
+      },
+      "delta_vs_baseline": 0.0020
+    },
+    {
+      "rank": 2,
+      "exp_name": "comb_lr5e5_emb16",
+      "phase": "phase5_combined",
+      "auc": 0.8367,
+      "pcoc": 1.1487,
+      "logloss": 0.2098,
+      "config": {
+        "model_type": "WideDeep",
+        "dnn_hidden_units": [1024, 512, 256, 128],
+        "embedding_size": 16,
+        "adam_learning_rate": 5e-5,
+        "net_dropout": 0.5,
+        "batch_size": 256
+      },
+      "delta_vs_baseline": 0.0013
+    },
+    {
+      "rank": 3,
+      "exp_name": "hp_lr_5e5",
+      "phase": "phase4_hyperparam",
+      "auc": 0.8373,
+      "pcoc": 1.1918,
+      "logloss": 0.2103,
+      "config": {
+        "model_type": "WideDeep",
+        "dnn_hidden_units": [1024, 512, 256, 128],
+        "embedding_size": 8,
+        "adam_learning_rate": 5e-5,
+        "net_dropout": 0.5,
+        "batch_size": 256
+      },
+      "delta_vs_baseline": 0.0019
+    },
+    {
+      "rank": 4,
+      "exp_name": "hp_lr_1e4",
+      "phase": "phase4_hyperparam",
+      "auc": 0.8371,
+      "pcoc": 1.0443,
+      "logloss": 0.2086,
+      "config": {
+        "model_type": "WideDeep",
+        "dnn_hidden_units": [1024, 512, 256, 128],
+        "embedding_size": 8,
+        "adam_learning_rate": 1e-4,
+        "net_dropout": 0.5,
+        "batch_size": 256
+      },
+      "delta_vs_baseline": 0.0017
+    },
+    {
+      "rank": 5,
+      "exp_name": "deeper_dnn",
+      "phase": "phase1_baseline",
+      "auc": 0.8354,
+      "pcoc": 1.0798,
+      "logloss": 0.2099,
+      "config": {
+        "model_type": "WideDeep",
+        "dnn_hidden_units": [1024, 512, 256, 128],
+        "embedding_size": 8,
+        "adam_learning_rate": 1e-5,
+        "net_dropout": 0.5,
+        "batch_size": 256
+      },
+      "delta_vs_baseline": 0.0
+    },
+    {
+      "rank": 6,
+      "exp_name": "baseline_v2",
+      "phase": "phase1_baseline",
+      "auc": 0.8212,
+      "pcoc": 1.1724,
+      "logloss": null,
+      "config": {
+        "model_type": "WideDeep",
+        "dnn_hidden_units": [512, 256, 64],
+        "embedding_size": 8,
+        "adam_learning_rate": 1e-5,
+        "net_dropout": 0.5,
+        "batch_size": 256
+      },
+      "delta_vs_baseline": -0.0142
+    }
+  ]
 }
