@@ -1,0 +1,5 @@
+实验名称: comb_lr5e5_emb16
+假设: 组合 lr=5e-5 + emb=16，更大 embedding 配合更高学习率是否有协同效果
+参数变化: lr=5e-5, emb=16（基准: lr=1e-5, emb=8）
+其他参数: DNN [1024,512,256,128], dropout=0.5, batch=256
+对比基准: deeper_dnn（AUC 0.8354）

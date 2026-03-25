@@ -1,0 +1,12 @@
+# Phase 5: lr=1e-4 + dropout=0.3
+experiment_name: comb_lr1e4_drop03
+model_type: WideDeep
+embedding_size: 8
+dnn_hidden_units: [1024, 512, 256, 128]
+batch_size: 256
+net_dropout: 0.3
+adam_learning_rate: 1.0e-04
+train_start_date: 2026-03-08
+train_end_date: 2026-03-10
+validation_date: 2026-03-11
+train_path_prefix: /mnt/data/oss_dsp_algo/ivr/sample/ivr_sample_v16/parquet

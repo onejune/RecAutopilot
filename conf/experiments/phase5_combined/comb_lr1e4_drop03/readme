@@ -1,0 +1,5 @@
+实验名称: comb_lr1e4_drop03
+假设: 组合 lr=1e-4 + dropout=0.3，更激进的学习率配合更低正则化
+参数变化: lr=1e-4, dropout=0.3（基准: lr=1e-5, dropout=0.5）
+其他参数: DNN [1024,512,256,128], emb=8, batch=256
+对比基准: deeper_dnn（AUC 0.8354）
