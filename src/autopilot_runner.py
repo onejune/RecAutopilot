@@ -329,7 +329,8 @@ def main():
     
     run_args = Args()
     run_args.conf = trainer.merged_config_path
-    run_args.name = args.name
+    # 优先用 --name 参数，否则从 yaml 的 experiment_name 字段读取，最后兜底 'autopilot'
+    run_args.name = args.name if args.name != 'autopilot' else trainer.params.get('experiment_name', 'autopilot')
     run_args.eval_keys = args.eval_keys
     run_args.validation = args.validation
     run_args.model_date = args.model_date
